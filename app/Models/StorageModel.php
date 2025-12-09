@@ -17,6 +17,7 @@ class StorageModel extends Model
 
     // KOLOM YANG BOLEH DIISI (PENTING!)
     protected $allowedFields    = [
+        'fg_number',
         'sku', 
         'name', 
         'category', 

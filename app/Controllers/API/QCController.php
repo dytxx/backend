@@ -23,6 +23,8 @@ class QCController extends ResourceController
     public function generateNumber()
     {
         header('Access-Control-Allow-Origin: *');
+        date_default_timezone_set('Asia/Jakarta');
+
         $model = new QCModel();
         $dateCode = date('dmy'); 
         $prefix = "QC" . $dateCode; 

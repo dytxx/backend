@@ -23,11 +23,13 @@ class WOController extends ResourceController
     // 2. Generate Nomor Otomatis (Format: WO-YYMMDD-XXXX)
     public function generateNumber()
     {
+        date_default_timezone_set('Asia/Jakarta');
+
         header('Access-Control-Allow-Origin: *');
         $model = new WOModel();
 
-        // Format: WO + 2 digit tahun + bulan + tanggal (Contoh: WO251209)
-        $dateCode = date('ymd'); 
+        // Format: WO + 2 digit tahun + bulan + tanggal (Contoh: WOddmmyy)
+        $dateCode = date('dmy'); 
         $prefix = "WO" . $dateCode; 
 
         // Cari nomor terakhir hari ini
