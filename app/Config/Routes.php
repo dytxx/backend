@@ -22,5 +22,13 @@ $routes->group('api', function($routes) {
     $routes->options('storage/submit', 'Api\StorageController::options');
     $routes->get('storage/recommend', 'Api\StorageController::getRecommendation');
     $routes->get('storage/pending-qc', 'Api\StorageController::getPendingQC');
+
+    $routes->get('storage', 'StorageController::index');           
+    $routes->post('storage', 'StorageController::create');         
+    $routes->put('storage/(:num)', 'StorageController::update/$1'); 
+    $routes->delete('storage/(:num)', 'StorageController::delete/$1');
+
+    $routes->get('delivery/generate-number', 'Api\DeliveryController::generateNumber');
+    $routes->post('delivery/submit', 'Api\DeliveryController::create');
 });
 
