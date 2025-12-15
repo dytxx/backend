@@ -8,6 +8,7 @@ use App\Models\UserModel;
 class AuthController extends ResourceController {
     use ResponseTrait;
 
+    // === METHOD OPTIONS (WAJIB ADA UNTUK CORS) ===
     public function options()
     {
         return $this->response
@@ -16,8 +17,9 @@ class AuthController extends ResourceController {
             ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
             ->setStatusCode(200);
     }
-    
+
     public function login() {
+        // Header CORS
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, OPTIONS');
         header('Access-Control-Allow-Headers: Content-Type');
@@ -32,8 +34,9 @@ class AuthController extends ResourceController {
         $user = $model->where('username', $json->username)->first();
 
         if ($user) {
-            // Cek Password (gunakan password_verify jika hash, atau == jika plain text sementara)
-            if (password_verify($json->password, $user['password'])) {
+            // === LOGIKA SEMENTARA: CEK PASSWORD BIASA (TANPA HASH) ===
+            // Pastikan data di database juga tersimpan sebagai plain text '123456'
+            if ($json->password === $user['password']) {
                 return $this->respond([
                     'status' => 200,
                     'message' => 'Login Berhasil',
