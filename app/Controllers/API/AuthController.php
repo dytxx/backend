@@ -8,6 +8,15 @@ use App\Models\UserModel;
 class AuthController extends ResourceController {
     use ResponseTrait;
 
+    public function options()
+    {
+        return $this->response
+            ->setHeader('Access-Control-Allow-Origin', '*')
+            ->setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+            ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+            ->setStatusCode(200);
+    }
+    
     public function login() {
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, OPTIONS');
