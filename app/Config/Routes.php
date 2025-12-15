@@ -7,28 +7,43 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->group('api', function($routes) {
-    $routes->post('qc/submit', 'Api\QCController::create');
-    $routes->options('qc/submit', 'Api\QCController::options');
-    $routes->get('qc/generate-number', 'Api\QCController::generateNumber');
+$routes->group('api', ['namespace' => 'App\Controllers\Api'], function($routes) {
+    
+    // 1. AUTHENTICATION
+    $routes->post('auth/login', 'AuthController::login');
+    $routes->options('auth/login', 'AuthController::options');
 
-    $routes->post('wo/submit', 'Api\WOController::create');
-    $routes->options('wo/submit', 'Api\WOController::options');
-    $routes->get('wo/generate-number', 'Api\WOController::generateNumber');
-    $routes->get('wo', 'Api\WOController::index');
+    // 2. USER MANAGEMENT
+    $routes->get('users', 'UserController::index');
+    $routes->post('users', 'UserController::create');
+    $routes->delete('users/(:num)', 'UserController::delete/$1');
+    $routes->options('users', 'UserController::options');
 
-    $routes->get('storage', 'Api\StorageController::index');
-    $routes->post('storage/submit', 'Api\StorageController::create');
-    $routes->options('storage/submit', 'Api\StorageController::options');
-    $routes->get('storage/recommend', 'Api\StorageController::getRecommendation');
-    $routes->get('storage/pending-qc', 'Api\StorageController::getPendingQC');
+    // 3. WORK ORDER (WO)
+    $routes->get('wo', 'WOController::index');
+    $routes->get('wo/generate-number', 'WOController::generateNumber');
+    $routes->post('wo/submit', 'WOController::create');
+    $routes->options('wo/submit', 'WOController::options');
 
-    $routes->get('storage', 'StorageController::index');           
-    $routes->post('storage', 'StorageController::create');         
-    $routes->put('storage/(:num)', 'StorageController::update/$1'); 
+    // 4. QC (Finish Goods)
+    $routes->get('qc/generate-number', 'QCController::generateNumber');
+    $routes->post('qc/submit', 'QCController::create');
+    $routes->options('qc/submit', 'QCController::options');
+
+    // 5. STORAGE
+    $routes->get('storage', 'StorageController::index');
+    $routes->get('storage/pending-qc', 'StorageController::getPendingQC');
+    $routes->get('storage/recommend', 'StorageController::getRecommendation');
+    $routes->post('storage/submit', 'StorageController::create');
+    $routes->put('storage/(:num)', 'StorageController::update/$1');
     $routes->delete('storage/(:num)', 'StorageController::delete/$1');
+    $routes->options('storage/submit', 'StorageController::options');
+    $routes->options('storage/recommend', 'StorageController::options'); // Tambahan options
+    $routes->options('storage/pending-qc', 'StorageController::options'); // Tambahan options
 
-    $routes->get('delivery/generate-number', 'Api\DeliveryController::generateNumber');
-    $routes->post('delivery/submit', 'Api\DeliveryController::create');
+    // 6. DELIVERY
+    $routes->get('delivery/generate-number', 'DeliveryController::generateNumber');
+    $routes->post('delivery/submit', 'DeliveryController::create');
+    $routes->options('delivery/submit', 'DeliveryController::options');
 });
 

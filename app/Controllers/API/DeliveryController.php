@@ -69,9 +69,11 @@ class DeliveryController extends ResourceController
         $storageModel->update($storageItem['id'], ['quantity' => $newQty]);
 
         // 2. Simpan Bukti Delivery
+        // PERBAIKAN DISINI: Menambahkan field 'destination'
         $deliveryModel->insert([
             'do_number'     => $json->do_number,
             'customer_name' => $json->customer_name,
+            'destination'   => $json->destination, // <--- PASTIKAN BARIS INI ADA
             'storage_id'    => $json->storage_id,
             'product_name'  => $storageItem['name'],
             'qty_delivery'  => $deliveryQty,
@@ -84,16 +86,6 @@ class DeliveryController extends ResourceController
             return $this->failServerError('Gagal memproses delivery.');
         }
 
-        return $this->respondCreated(['message' => 'Delivery berhasil! Stok telah dikurangi.']);
-
-        $deliveryModel->insert([
-        'do_number'     => $json->do_number,
-        'customer_name' => $json->customer_name, // Ini dikirim dari frontend (yg sudah auto-fill)
-        'destination'   => $json->destination,   // <--- Simpan Tujuan
-        'storage_id'    => $json->storage_id,
-        'product_name'  => $storageItem['name'],
-        'qty_delivery'  => $deliveryQty,
-        'notes'         => $json->notes
-    ]);
+        return $this->respondCreated(['message' => 'Delivery berhasil! Stok berkurang & Data tersimpan.']);
     }
 }
